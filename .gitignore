@@ -1,0 +1,13 @@
+__pycache__/
+.vscode/
+.idea/
+
+.env
+
+datebase/migrations/versions/*.py
+
+values/
+
+security/*.py
+
+datebase/models.py

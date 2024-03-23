@@ -1,0 +1,20 @@
+from fastapi import FastAPI, APIRouter
+
+from .identification import identification_router
+
+
+def include_router(app: FastAPI, router: APIRouter):
+    app.include_router(router)
+    
+def include_routers(app: FastAPI):
+    routers = [
+        identification_router
+    ]
+    
+    for router in routers:
+        include_router(app, router)
+    
+    
+    
+    
+    
