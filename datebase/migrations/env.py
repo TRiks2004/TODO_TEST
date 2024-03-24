@@ -16,9 +16,15 @@ config = context.config
 section = config.config_ini_section
 
 config.set_section_option(section, "POSTGRES_USER", settings_alembic.db_user)
-config.set_section_option(section, "POSTGRES_PASSWORD", settings_alembic.db_password)
-config.set_section_option(section, "EXTERNAL_HOST_POSTGRES", settings_alembic.db_host)
-config.set_section_option(section, "EXTERNAL_PORT_POSTGRES", str(settings_alembic.db_port))
+config.set_section_option(
+    section, "POSTGRES_PASSWORD", settings_alembic.db_password
+)
+config.set_section_option(
+    section, "EXTERNAL_HOST_POSTGRES", settings_alembic.db_host
+)
+config.set_section_option(
+    section, "EXTERNAL_PORT_POSTGRES", str(settings_alembic.db_port)
+)
 config.set_section_option(section, "POSTGRES_DB", settings_alembic.db_name)
 
 # Interpret the config file for Python logging.

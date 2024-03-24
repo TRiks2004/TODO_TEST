@@ -6,17 +6,10 @@ from .user import user_router
 
 def include_router(app: FastAPI, router: APIRouter):
     app.include_router(router)
-    
+
+
 def include_routers(app: FastAPI):
-    routers = [
-        user_router,
-        identification_router
-    ]
-    
+    routers = [user_router, identification_router]
+
     for router in routers:
         include_router(app, router)
-    
-    
-    
-    
-    

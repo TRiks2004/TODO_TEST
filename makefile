@@ -15,3 +15,13 @@ build-setup:
 	sudo docker compose -f dokcercompose.yaml up -d --build
 
 # ------------------------------------------------------------------------------------
+
+# formatter
+# ------------------------------------------------------------------------------------
+
+formatter-black:
+	black --config formatter_config/.black .
+
+formatter: formatter-black
+
+# ------------------------------------------------------------------------------------
