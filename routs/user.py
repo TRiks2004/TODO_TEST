@@ -22,10 +22,7 @@ user_router = APIRouter(
 )
 
 @user_router.get('/role', response_model=List[GetRole])
-async def get_role(
-    skip: int = 0, limit: int = 100, 
-    session: AsyncSession = Depends(get_async_session)
-):
+async def get_role(skip: int = 0, limit: int = 100, session: AsyncSession = Depends(get_async_session)):
     get = await select_all_role(session, skip, limit)
     return get
     
