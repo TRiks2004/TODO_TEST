@@ -1,6 +1,7 @@
 from fastapi import FastAPI, APIRouter
 
 from .identification import identification_router
+from .user import user_router
 
 
 def include_router(app: FastAPI, router: APIRouter):
@@ -8,6 +9,7 @@ def include_router(app: FastAPI, router: APIRouter):
     
 def include_routers(app: FastAPI):
     routers = [
+        user_router,
         identification_router
     ]
     
