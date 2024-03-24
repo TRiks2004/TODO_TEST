@@ -1,0 +1,17 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black --config formatter_config/.black .
+        language: system
+        types: [python]
+        require_serial: true
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: isort --settings-path formatter_config/.isort.cfg .
+        language: system
+        types: [python]
+        require_serial: true
