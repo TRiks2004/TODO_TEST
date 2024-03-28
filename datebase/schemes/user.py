@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 
 from uuid import UUID
 
-from .role import GetRole
+from .role import GetRoleS
 
 from datetime import datetime
 

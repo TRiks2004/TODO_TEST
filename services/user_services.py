@@ -1,79 +1,35 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from typing import List
-from uuid import UUID
 
-from datebase.models import Role, User
-from sqlalchemy.future import select
+from repository import RepositoryRole, Role
 
-from .services import result_execute
+from datebase.schemes.role import CreateRoleS
 
-
-async def select_all_role(
-    session: AsyncSession, skip: int = 0, limit: int = 100
-) -> List[Role]:
-    """
-    Асинхронно выбирает все роли из базы данных с помощью запроса SQL.
-
-    Args:
-        session (AsyncSession): Объект сессии SQLAlchemy для асинхронных операций.
-        skip (int, optional): количество пропускаемых записей. Defaults to 0.
-        limit (int, optional): ограничение на количество возвращаемых записей. Defaults to 100.
-
-    Returns:
-        List[Role]: Список объектов Role из базы данных.
-    """
-    stmt = select(Role).offset(skip).limit(limit)
-    result = await result_execute(stmt, session)
-    return result.all()
+from .services import Services
 
 
-async def select_role_by_id(session: AsyncSession, id_role: int) -> Role:
-    """
-    Асинхронно выбирает одну роль из базы данных по ее идентификатору.
+class RoleServices(Services):
 
-    Args:
-        session (AsyncSession): Объект сессии SQLAlchemy для асинхронных операций.
-        id_role (int): Идентификатор роли, которую нужно выбрать.
+    def __init__(self) -> None:
+        super().__init__()
 
-    Returns:
-        Role: Объект Role из базы данных.
-    """
-    stmt = select(Role).where(Role.id_role == id_role)
-    result = await result_execute(stmt, session)
-    return result.all()
+    @classmethod
+    async def service_select_all(
+        cls, skip: int = 0, limit: int = 100
+    ) -> List[Role]:
+        return await RepositoryRole.get_all(skip, limit)
 
+    @classmethod
+    async def service_select_by_id(cls, id_role: int) -> Role:
+        return await RepositoryRole.get_by_id(id_role)
 
-async def select_user(
-    session: AsyncSession, skip: int = 0, limit: int = 100
-) -> List[User]:
-    """
-    Асинхронно выбирает всех пользователей из базы данных с помощью запроса SQL.
+    @classmethod
+    async def service_create(cls, role: CreateRoleS) -> Role:
+        return await RepositoryRole.add(role.get_model_data())
 
-    Args:
-        session (AsyncSession): Объект сессии SQLAlchemy для асинхронных операций.
-        skip (int, optional): количество пропускаемых записей. Defaults to 0.
-        limit (int, optional): ограничение на количество возвращаемых записей. Defaults to 100.
+    @classmethod
+    async def service_delete(cls, id_role: int) -> Role:
+        return await RepositoryRole.delete_by_id(id_role)
 
-    Returns:
-        List[User]: Список объектов User из базы данных.
-    """
-    stmt = select(User).offset(skip).limit(limit)
-    result = await result_execute(stmt, session)
-    return result.all()
-
-
-async def select_user_by_id(session: AsyncSession, id_user: UUID) -> User:
-    """
-    Асинхронно выбирает одного пользователя из базы данных по его идентификатору.
-
-    Args:
-        session (AsyncSession): Объект сессии SQLAlchemy для асинхронных операций.
-        id_user (UUID): Идентификатор пользователя, которому нужно выбрать.
-
-    Returns:
-        User: Объект User из базы данных.
-    """
-    stmt = select(User).where(User.id_user == id_user)
-    result = await result_execute(stmt, session)
-    return result.all()
+    @classmethod
+    async def service_update(cls, id_role: int, lavel: int) -> Role:
+        return await RepositoryRole.update_by_id(id_role, lavel)
