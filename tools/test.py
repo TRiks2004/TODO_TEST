@@ -55,15 +55,22 @@ async def main():
     user_password_by_login = await RepositoryUser.get_hash_password_by_login(
         "triks1"
     )
-    
+
     await my_print(
         "RepositoryUser.get_by_login()",
         await to_json({"hash_password": user_password_by_login}),
     )
-    
 
-    
-    
+    user_lavel_by_id = await RepositoryUser.get_lavel_by_id(
+        "2a9aef5a-42e9-40ee-94c8-91fd82c5314f"
+    )
+
+    await my_print(
+        "RepositoryUser.get_lavel_by_id()",
+        user_lavel_by_id,
+    )
+
     ...
-    
+
+
 asyncio.run(main())

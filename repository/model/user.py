@@ -1,8 +1,11 @@
-from ..RepositoryModel import RepositoryModel, async_session_decorator
+from ..RepositoryModel import RepositoryModel, async_session_decorator, select
 from ..RepositoryModelServices import RepositoryModelServices
-from datebase.models import User
+from datebase.models import User, Role
 
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from uuid import UUID
+
 
 class RepositoryUser(RepositoryModel[User]):
     _MDB: User = User
@@ -26,15 +29,18 @@ class RepositoryUser(RepositoryModel[User]):
 
     @classmethod
     @async_session_decorator
-    async def get_lavel_by_login(
-        cls, login: str, *, session: AsyncSession = None
-    ):
-        
-        return await cls.get_column(cls._MDB.login == login, cls._MDB.id_role)
-    
+    async def get_lavel_by_id(
+        cls, id_user: UUID, *, session: AsyncSession = None
+    ) -> int | None:
+
+        stmt = select(Role.lavel).join(User).where(cls._MDB.id_user == id_user)
+        # Выполнение запроса
+        result = await session.execute(stmt)
+        # Возвращение результата
+        return result.scalars().one_or_none()
+
+
 class RepositoryUserServices(RepositoryModelServices):
-    
+
     def __init__(self) -> None:
         super().__init__()
-
-    

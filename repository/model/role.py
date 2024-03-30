@@ -1,5 +1,5 @@
 from ..RepositoryModel import RepositoryModel, async_session_decorator
-from ..RepositoryModelServices import RepositoryModelServices 
+from ..RepositoryModelServices import RepositoryModelServices
 
 from datebase.models import Role
 
@@ -9,6 +9,7 @@ from typing import List
 
 RMRole = Role
 """Repository Model Role - тип данных репозитория ролей"""
+
 
 class RepositoryRole(RepositoryModel[Role]):
     _MDB: Role = Role
@@ -27,6 +28,7 @@ class RepositoryRole(RepositoryModel[Role]):
     @classmethod
     async def update_by_id(cls, id_role: int, lavel: int) -> Role:
         return await cls.update(cls.MDB.id_role == id_role, {"lavel": lavel})
+
 
 class RepositoryRoleServices(RepositoryModelServices):
     def __init__(self) -> None:
@@ -53,6 +55,3 @@ class RepositoryRoleServices(RepositoryModelServices):
     @classmethod
     async def service_update(cls, id_role: int, lavel: int) -> Role:
         return await RepositoryRole.update_by_id(id_role, lavel)
-
-
-

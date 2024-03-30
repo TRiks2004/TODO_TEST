@@ -14,7 +14,6 @@ from tools.classproperty import classproperty
 from .utilities import async_session_decorator
 
 
-
 MDT = TypeVar("MDT", bound=BaseModel)
 """Model Data Type - тип данных модели данных"""
 
@@ -23,7 +22,6 @@ class RepositoryModel(Generic[MDT]):
     # Переменная класса для хранения типа модели данных
     _MDB: MDT
     """Model Data Base - Модель данных для репозитория"""
-
 
     def __init__(self):
         pass
@@ -86,7 +84,7 @@ class RepositoryModel(Generic[MDT]):
         cls, skip: int = 0, limit: int = 100, *, session: AsyncSession = None
     ) -> Iterator[MDT]:
         """Метод для получения всех моделей из базы данных с пагинацией."""
-        
+
         # Формирование запроса на получение всех моделей
         stmt = select(cls._MDB).offset(skip).limit(limit)
         # Выполнение запроса
@@ -106,7 +104,10 @@ class RepositoryModel(Generic[MDT]):
 
         # Формирование запроса на обновление
         stmt = (
-            update(cls._MDB).values(*args).where(whereclause).returning(cls._MDB)
+            update(cls._MDB)
+            .values(*args)
+            .where(whereclause)
+            .returning(cls._MDB)
         )
         # Выполнение запроса
         result = await session.execute(stmt)
