@@ -24,23 +24,30 @@ class RepositoryToken(RepositoryModel[Token]):
         return result.scalars().one_or_none()
 
     @classmethod
-    @async_session_decorator
-    async def create_token(cls, create_token: SCreateToken, *, session: AsyncSession = None) -> Token | None:
-        
-        token = await cls.get_tokens(user_id=create_token.user_id, session=session)
-        
-        if token:
-            
-            end_life_cycle_token = token.create_at + token.life_cycle
-            
-            if end_life_cycle_token < datetime.datetime.now(tz=datetime.UTC):
-                await cls.delete_token(token.id_token)
-                return await cls.add(cls._MDB(**create_token.model_dump()), session=session)
-            
-            return token
-        else:
-            return await cls.add(cls._MDB(**create_token.model_dump()), session=session)
+    async def create_token(cls, create_token: SCreateToken) -> Token | None:
+        return await cls.add(create_token.get_model_data())
         
     @classmethod
     async def delete_token(cls, token_id: UUID) -> Token | None:
         return await cls.delete(cls._MDB.id_token == token_id)
+        
+class RepositoryTokenServices(RepositoryModelServices):
+    
+    def __init__(self):
+        super().__init__()
+        
+    @classmethod
+    async def get_tokens(cls, create_token: SCreateToken):
+        token = await RepositoryToken.get_tokens(create_token.user_id)
+        
+        if token:    
+            end_life_cycle_token = token.create_at + token.life_cycle
+            
+            if end_life_cycle_token < datetime.datetime.now(tz=datetime.UTC):
+                delete_token = await RepositoryToken.delete_token(token.id_token)
+                return await RepositoryToken.create_token(create_token)
+            
+            return token
+        else:
+            return await RepositoryToken.create_token(create_token)
+

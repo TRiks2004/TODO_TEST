@@ -1,11 +1,16 @@
-from pydantic import BaseModel
+from .base import BaseModelS
 
 from uuid import UUID
 
 from datetime import datetime, timedelta
 
-class SBaseToken(BaseModel):
+from datebase.models import Token
 
+class SBaseToken(BaseModelS):
+
+    def get_model_data(self):
+        return super().get_model_data(Token)
+    
     class Config:
         from_attributes = True
 
