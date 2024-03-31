@@ -3,6 +3,10 @@ from fastapi import APIRouter
 from .prefix import prefix
 
 
+from repository import RepositoryToken, Token
+
+from datebase.schemes.token import SGetToken, SCreateToken
+
 identification_router = APIRouter(
     prefix=f"/{prefix.identification}",
     tags=["Identification"],
@@ -18,9 +22,20 @@ identification_router = APIRouter(
 #   что пользователь или система являются тем, за кого они себя выдают.
 
 
+from repository import RepositoryUserServices 
+from security.password import Password
+
+
 @identification_router.get("/authe")
-def authentication():
-    return "Authentication"
+async def authentication(login: str, password: str):
+    # TODO: Переписать на отдельный сервис
+    user = await RepositoryUserServices.service_select_by_login(login)    
+    verify = await Password.verify(user.hash_password, password)
+    
+    if verify:
+        return await RepositoryToken.create_token(SCreateToken(user_id=user.id_user, auth_token='test'))
+    else:
+        return "Authentication failed" 
 
 
 # Авторизация
