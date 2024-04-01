@@ -4,4 +4,3 @@ exclude = '''
     values/
 '''
 target-version = ['py312', 'py311', 'py310']
-string-normalization = "True"

@@ -15,17 +15,17 @@ config = context.config
 
 section = config.config_ini_section
 
-config.set_section_option(section, 'POSTGRES_USER', settings_alembic.db_user)
+config.set_section_option(section, "POSTGRES_USER", settings_alembic.db_user)
 config.set_section_option(
-    section, 'POSTGRES_PASSWORD', settings_alembic.db_password
+    section, "POSTGRES_PASSWORD", settings_alembic.db_password
 )
 config.set_section_option(
-    section, 'EXTERNAL_HOST_POSTGRES', settings_alembic.db_host
+    section, "EXTERNAL_HOST_POSTGRES", settings_alembic.db_host
 )
 config.set_section_option(
-    section, 'EXTERNAL_PORT_POSTGRES', str(settings_alembic.db_port)
+    section, "EXTERNAL_PORT_POSTGRES", str(settings_alembic.db_port)
 )
-config.set_section_option(section, 'POSTGRES_DB', settings_alembic.db_name)
+config.set_section_option(section, "POSTGRES_DB", settings_alembic.db_name)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -45,7 +45,7 @@ target_metadata = BaseModel.metadata
 
 
 def run_migrations_offline() -> None:
-    '''Run migrations in 'offline' mode.
+    """Run migrations in 'offline' mode.
 
     This configures the context with just a URL
     and not an Engine, though an Engine is acceptable
@@ -55,13 +55,13 @@ def run_migrations_offline() -> None:
     Calls to context.execute() here emit the given string to the
     script output.
 
-    '''
-    url = url = config.get_main_option('sqlalchemy.url')
+    """
+    url = url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
-        dialect_opts={'paramstyle': 'named'},
+        dialect_opts={"paramstyle": "named"},
     )
 
     with context.begin_transaction():
@@ -69,15 +69,15 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    '''Run migrations in 'online' mode.
+    """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
 
-    '''
+    """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
-        prefix='sqlalchemy.',
+        prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 

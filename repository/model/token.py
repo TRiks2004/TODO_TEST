@@ -16,7 +16,6 @@ from typing import List
 
 
 class RepositoryToken(RepositoryModel[Token]):
-    _MDB = Token
 
     def __init__(self):
         super().__init__()
@@ -45,14 +44,14 @@ class RepositoryToken(RepositoryModel[Token]):
         return await cls.delete(cls._MDB.id_token == token_id)
 
 
-class RepositoryTokenServices(RepositoryModelServices):
+class RepositoryTokenServices(RepositoryModelServices[RepositoryToken]):
 
     def __init__(self):
         super().__init__()
 
     @classmethod
     async def get_tokens(cls, create_token: SCreateToken):
-        token = await RepositoryToken.get_tokens(create_token.user_id)
+        token = await cls._RMD.get_tokens(create_token.user_id)
 
         if token:
             end_life_cycle_token = token.create_at + token.life_cycle
@@ -61,8 +60,7 @@ class RepositoryTokenServices(RepositoryModelServices):
                 delete_token = await RepositoryToken.delete_token(
                     token.id_token
                 )
-                return await RepositoryToken.create_token(create_token)
-
+                return await cls._RMD.create_token(create_token)
             return token
         else:
-            return await RepositoryToken.create_token(create_token)
+            return await cls._RMD.create_token(create_token)

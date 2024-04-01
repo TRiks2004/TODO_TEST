@@ -8,8 +8,8 @@ from repository import RepositoryAuthenticationServices
 from datebase.schemes.token import SGetToken, SCreateToken
 
 identification_router = APIRouter(
-    prefix=f'/{prefix.identification}',
-    tags=['Identification'],
+    prefix=f"/{prefix.identification}",
+    tags=["Identification"],
 )
 
 
@@ -22,7 +22,7 @@ identification_router = APIRouter(
 #   что пользователь или система являются тем, за кого они себя выдают.
 
 
-@identification_router.get('/authe', response_model=SGetToken)
+@identification_router.get("/authe", response_model=SGetToken)
 async def authentication(login: str, password: str):
     # TODO: Переписать на отдельный сервис
     return await RepositoryAuthenticationServices.service_authentication(
@@ -40,6 +40,6 @@ async def authentication(login: str, password: str):
 #   но его доступ к конфиденциальной информации может быть ограничен в соответствии с его ролью или полномочиями.
 
 
-@identification_router.get('/autho')
+@identification_router.get("/autho")
 def authorization():
-    return 'Authorization'
+    return "Authorization"

@@ -24,8 +24,8 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     app = FastAPI(
         debug=settings_api.debug,
-        docs_url='/docs',
-        title='SUAI Schedule API(FastAPI)',
+        docs_url="/docs",
+        title="SUAI Schedule API(FastAPI)",
         lifespan=lifespan,
     )
 

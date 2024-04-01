@@ -7,4 +7,4 @@ from common import settings_redis
 
 async def init_fast_api_cache():
     redis = aioredis.from_url(url=settings_redis.url)
-    FastAPICache.init(RedisBackend(redis), prefix='fastapi-cache')
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")

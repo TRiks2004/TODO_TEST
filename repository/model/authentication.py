@@ -9,7 +9,7 @@ from security import Password, create_token
 from fastapi import HTTPException
 
 
-class RepositoryAuthenticationServices(RepositoryModelServices):
+class RepositoryAuthenticationServices(RepositoryModelServices[None]):
     def __init__(self) -> None:
         super().__init__()
 
@@ -26,5 +26,5 @@ class RepositoryAuthenticationServices(RepositoryModelServices):
             return await RepositoryTokenServices.get_tokens(token_create)
         else:
             raise HTTPException(
-                status_code=401, detail='Incorrect login or password'
+                status_code=401, detail="Incorrect login or password"
             )
