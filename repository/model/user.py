@@ -10,7 +10,8 @@ from typing import List
 
 
 class RepositoryUser(RepositoryModel[User]):
-
+    _MDB = User
+    
     def __init__(self):
         super().__init__()
 
@@ -42,7 +43,8 @@ class RepositoryUser(RepositoryModel[User]):
 
 
 class RepositoryUserServices(RepositoryModelServices[RepositoryUser]):
-
+    _RMD = RepositoryUser
+    
     def __init__(self) -> None:
         super().__init__()
 

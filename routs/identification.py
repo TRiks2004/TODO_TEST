@@ -1,17 +1,11 @@
-from fastapi import APIRouter
-
-from .prefix import prefix
-
-
 from repository import RepositoryAuthenticationServices
 
-from datebase.schemes.token import SGetToken, SCreateToken
+from datebase.schemes.token import SGetToken
+from fastapi import Depends, APIRouter
 
-identification_router = APIRouter(
-    prefix=f"/{prefix.identification}",
-    tags=["Identification"],
-)
+from repository.access_levels import AccessLevels, check_access_level
 
+from .prefix import prefix, TokenSchema
 
 # Аутентификация
 # Этот процесс проверки подлинности идентификации пользователя или системы.
@@ -20,6 +14,12 @@ identification_router = APIRouter(
 #   таких как пароли, биометрические данные (отпечатки пальцев, распознавание лица и т.д.),
 #   смарт-карты, токены и другие технологии. Цель аутентификации - удостовериться,
 #   что пользователь или система являются тем, за кого они себя выдают.
+
+
+identification_router = APIRouter(
+    prefix=f"/{prefix.identification}",
+    tags=["Identification"],
+)
 
 
 @identification_router.get("/authe", response_model=SGetToken)
@@ -41,5 +41,12 @@ async def authentication(login: str, password: str):
 
 
 @identification_router.get("/autho")
-def authorization():
-    return "Authorization"
+async def authorization(token: TokenSchema):
+    check = await check_access_level(token, AccessLevels.defult) 
+    return check
+    
+    
+from exception import BaseHTTPException
+@identification_router.get("/error")
+async def error():
+    raise BaseHTTPException(401, "Пользователь не аутентифицирован")

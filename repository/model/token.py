@@ -16,7 +16,8 @@ from typing import List
 
 
 class RepositoryToken(RepositoryModel[Token]):
-
+    _MDB = Token
+    
     def __init__(self):
         super().__init__()
 
@@ -45,7 +46,8 @@ class RepositoryToken(RepositoryModel[Token]):
 
 
 class RepositoryTokenServices(RepositoryModelServices[RepositoryToken]):
-
+    _RMD = RepositoryToken
+    
     def __init__(self):
         super().__init__()
 

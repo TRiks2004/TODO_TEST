@@ -6,7 +6,7 @@ from datebase.schemes.token import SGetToken, SCreateToken
 
 from security import Password, create_token
 
-from fastapi import HTTPException
+from exception import AuthenticationHttpException
 
 
 class RepositoryAuthenticationServices(RepositoryModelServices[None]):
@@ -16,6 +16,10 @@ class RepositoryAuthenticationServices(RepositoryModelServices[None]):
     @classmethod
     async def service_authentication(cls, login: str, password: str) -> Token:
         user = await RepositoryUserServices.service_select_by_login(login)
+        
+        if user is None:
+            raise AuthenticationHttpException("Incorrect login or password")
+        
         verify = await Password.verify(user.hash_password, password)
 
         if verify:
@@ -25,6 +29,4 @@ class RepositoryAuthenticationServices(RepositoryModelServices[None]):
             )
             return await RepositoryTokenServices.get_tokens(token_create)
         else:
-            raise HTTPException(
-                status_code=401, detail="Incorrect login or password"
-            )
+            raise AuthenticationHttpException("Incorrect login or password")

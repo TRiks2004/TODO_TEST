@@ -1,5 +1,9 @@
 from pydantic_settings import BaseSettings
 
+from fastapi import APIRouter, Depends
+from fastapi.security import APIKeyHeader
+
+from typing import TypeAlias, Annotated
 
 class Prefix(BaseSettings):
     identification: str = "identification"
@@ -8,3 +12,12 @@ class Prefix(BaseSettings):
 
 
 prefix = Prefix()
+
+apikey_scheme = APIKeyHeader(name="Authorization", auto_error=False)
+
+TokenSchema: TypeAlias = Annotated[str, Depends(apikey_scheme)]
+
+
+
+
+

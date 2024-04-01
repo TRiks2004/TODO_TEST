@@ -1,12 +1,12 @@
-from fastapi import APIRouter, Depends
+from fastapi import Depends, APIRouter
 
 from typing import Annotated, List
-
-from .prefix import prefix
 
 from datebase.schemes.role import GetRoleS, CreateRoleS
 
 from repository import RepositoryRoleServices as RoleServices, Role
+
+from .prefix import prefix
 
 role_router = APIRouter(
     prefix=f"/{prefix.role}",

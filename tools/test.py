@@ -41,36 +41,14 @@ async def my_print(handler: str, bady: str):
 
     print("-" * len(answer))
 
+from repository.access_levels import AccessLevels, check_access_level
 
 async def main():
 
-    user = await RepositoryUser.get_all()
-    await my_print("RepositoryUser.get_all()", await models_to_json(user))
-
-    user_by_login = await RepositoryUser.get_by_login("triks1")
-    await my_print(
-        "RepositoryUser.get_by_login()", await model_to_json(user_by_login)
+    await check_access_level(
+        'XD5TrqCebIUI2X4xhS4otxAPUhTyg27QhIVXk9fZi6y8Htx0xFleB9hsuzwJ1ZN3HyTHDliu02WHPq1ZsoqHcNkYMLISZCEjEtp2',
+        AccessLevels.defult
     )
-
-    user_password_by_login = await RepositoryUser.get_hash_password_by_login(
-        "triks1"
-    )
-
-    await my_print(
-        "RepositoryUser.get_by_login()",
-        await to_json({"hash_password": user_password_by_login}),
-    )
-
-    user_lavel_by_id = await RepositoryUser.get_lavel_by_id(
-        "2a9aef5a-42e9-40ee-94c8-91fd82c5314f"
-    )
-
-    await my_print(
-        "RepositoryUser.get_lavel_by_id()",
-        user_lavel_by_id,
-    )
-
-    ...
 
 
 asyncio.run(main())

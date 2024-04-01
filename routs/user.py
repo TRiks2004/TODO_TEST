@@ -10,6 +10,7 @@ from repository import RepositoryUserServices as UserServices, User
 
 from uuid import UUID
 
+
 user_router = APIRouter(
     prefix=f"/{prefix.user}",
     tags=["User"],
