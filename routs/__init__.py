@@ -10,10 +10,7 @@ def include_router(app: FastAPI, router: APIRouter):
 
 
 def include_routers(app: FastAPI):
-    routers = [
-        user_router, 
-        role_router, 
-        identification_router]
+    routers = [user_router, role_router, identification_router]
 
     for router in routers:
         include_router(app, router)

@@ -21,9 +21,9 @@ async def get_async_session() -> AsyncSession:  # type: ignore
 
 
 def async_db_transaction(engine_async=engine_async):
-    """
+    '''
     Decorator to manage database connection and transaction for an asynchronous function.
-    """
+    '''
 
     def decorator(func):
         async def wrapper(*args, **kwargs):
@@ -39,5 +39,5 @@ def async_db_transaction(engine_async=engine_async):
 # Define an asynchronous function to test the database
 @async_db_transaction()
 async def test_db(conn) -> None:
-    rez = await conn.execute(text("SELECT 1"))
-    print("tr = ", rez.fetchall())  # Print the result of the query
+    rez = await conn.execute(text('SELECT 1'))
+    print('tr = ', rez.fetchall())  # Print the result of the query

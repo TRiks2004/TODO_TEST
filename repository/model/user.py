@@ -8,6 +8,7 @@ from uuid import UUID
 
 from typing import List
 
+
 class RepositoryUser(RepositoryModel[User]):
     _MDB: User = User
 
@@ -58,41 +59,16 @@ class RepositoryUserServices(RepositoryModelServices):
 
     @classmethod
     async def service_select_by_id(cls, id_user: UUID) -> User:
-        return await RepositoryUser.get_by_id(id_user) 
-    
+        return await RepositoryUser.get_by_id(id_user)
+
     @classmethod
     async def service_select_by_login(cls, login: str):
         return await RepositoryUser.get_by_login(login)
-    
+
     @classmethod
     async def service_select_hash_password_by_login(cls, login: str):
         return await RepositoryUser.get_hash_password_by_login(login)
-    
+
     @classmethod
     async def service_select_lavel_by_id(cls, id_user: UUID):
         return await RepositoryUser.get_lavel_by_id(id_user)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

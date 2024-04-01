@@ -4,6 +4,7 @@ from uuid import UUID
 
 from datetime import datetime
 
+
 class BaseUser(BaseModel):
 
     class Config:
@@ -22,4 +23,3 @@ class CreateUser(BaseUser):
 
 class GetUser(CreateUser):
     id_user: UUID
-    

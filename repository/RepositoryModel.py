@@ -14,14 +14,14 @@ from tools.classproperty import classproperty
 from .utilities import async_session_decorator
 
 
-MDT = TypeVar("MDT", bound=BaseModel)
-"""Model Data Type - тип данных модели данных"""
+MDT = TypeVar('MDT', bound=BaseModel)
+'''Model Data Type - тип данных модели данных'''
 
 
 class RepositoryModel(Generic[MDT]):
     # Переменная класса для хранения типа модели данных
     _MDB: MDT
-    """Model Data Base - Модель данных для репозитория"""
+    '''Model Data Base - Модель данных для репозитория'''
 
     def __init__(self):
         pass
@@ -34,7 +34,7 @@ class RepositoryModel(Generic[MDT]):
         *,
         session: AsyncSession = None,
     ) -> MDT:
-        """Метод для добавления новой модели в базу данных."""
+        '''Метод для добавления новой модели в базу данных.'''
 
         # Добавление модели в сессию
         session.add(model)
@@ -52,7 +52,7 @@ class RepositoryModel(Generic[MDT]):
         *,
         session: AsyncSession = None,
     ) -> MDT:
-        """Метод для получения модели из базы данных по условию."""
+        '''Метод для получения модели из базы данных по условию.'''
 
         # Формирование запроса
         stmt = select(cls._MDB).where(whereclause)
@@ -83,7 +83,7 @@ class RepositoryModel(Generic[MDT]):
     async def get_all(
         cls, skip: int = 0, limit: int = 100, *, session: AsyncSession = None
     ) -> Iterator[MDT]:
-        """Метод для получения всех моделей из базы данных с пагинацией."""
+        '''Метод для получения всех моделей из базы данных с пагинацией.'''
 
         # Формирование запроса на получение всех моделей
         stmt = select(cls._MDB).offset(skip).limit(limit)
@@ -100,7 +100,7 @@ class RepositoryModel(Generic[MDT]):
         *args: Union[Executable, Sequence],
         session: AsyncSession = None,
     ) -> MDT:
-        """Метод для обновления модели в базе данных по условию."""
+        '''Метод для обновления модели в базе данных по условию.'''
 
         # Формирование запроса на обновление
         stmt = (
@@ -127,7 +127,7 @@ class RepositoryModel(Generic[MDT]):
         *,
         session: AsyncSession = None,
     ) -> MDT:
-        """Метод для удаления модели из базы данных по условию."""
+        '''Метод для удаления модели из базы данных по условию.'''
 
         # Формирование запроса на удаление
         stmt = delete(cls._MDB).where(whereclause).returning(cls._MDB)
