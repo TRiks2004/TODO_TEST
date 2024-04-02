@@ -5,8 +5,6 @@ from .role import role_router
 from .identification import identification_router
 
 
-
-
 def include_router(app: FastAPI, router: APIRouter):
     app.include_router(router)
 

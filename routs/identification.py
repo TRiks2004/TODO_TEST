@@ -24,7 +24,6 @@ identification_router = APIRouter(
 
 @identification_router.get("/authe", response_model=SGetToken)
 async def authentication(login: str, password: str):
-    # TODO: Переписать на отдельный сервис
     return await RepositoryAuthenticationServices.service_authentication(
         login, password
     )
@@ -42,11 +41,5 @@ async def authentication(login: str, password: str):
 
 @identification_router.get("/autho")
 async def authorization(token: TokenSchema):
-    check = await check_access_level(token, AccessLevels.defult) 
+    check = await check_access_level(token, AccessLevels.admin)
     return check
-    
-    
-from exception import BaseHTTPException
-@identification_router.get("/error")
-async def error():
-    raise BaseHTTPException(401, "Пользователь не аутентифицирован")

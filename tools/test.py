@@ -41,13 +41,15 @@ async def my_print(handler: str, bady: str):
 
     print("-" * len(answer))
 
+
 from repository.access_levels import AccessLevels, check_access_level
+
 
 async def main():
 
     await check_access_level(
-        'XD5TrqCebIUI2X4xhS4otxAPUhTyg27QhIVXk9fZi6y8Htx0xFleB9hsuzwJ1ZN3HyTHDliu02WHPq1ZsoqHcNkYMLISZCEjEtp2',
-        AccessLevels.defult
+        "XD5TrqCebIUI2X4xhS4otxAPUhTyg27QhIVXk9fZi6y8Htx0xFleB9hsuzwJ1ZN3HyTHDliu02WHPq1ZsoqHcNkYMLISZCEjEtp2",
+        AccessLevels.defult,
     )
 
 

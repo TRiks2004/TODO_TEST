@@ -16,10 +16,10 @@ class RepositoryAuthenticationServices(RepositoryModelServices[None]):
     @classmethod
     async def service_authentication(cls, login: str, password: str) -> Token:
         user = await RepositoryUserServices.service_select_by_login(login)
-        
+
         if user is None:
             raise AuthenticationHttpException("Incorrect login or password")
-        
+
         verify = await Password.verify(user.hash_password, password)
 
         if verify:
