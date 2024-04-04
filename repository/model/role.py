@@ -12,9 +12,6 @@ from datebase.schemes.role import CreateRoleS
 
 from typing import List
 
-RMRole = Role
-"""Repository Model Role - тип данных репозитория ролей"""
-
 
 class RepositoryRole(RepositoryModel[Role]):
 

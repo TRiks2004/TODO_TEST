@@ -28,7 +28,7 @@ class ExceptionInfoBlock(Enum):
     role_not_found: ExceptionInfo = ExceptionInfo(
         status="role not found", code=-5000
     )
-    
+
     token_not_found: ExceptionInfo = ExceptionInfo(
         status="no access", code=-4000
     )
@@ -36,7 +36,7 @@ class ExceptionInfoBlock(Enum):
     denied_access: ExceptionInfo = ExceptionInfo(
         status="denied access", code=0000
     )
-    
+
 
 @dataclass
 class DetailException:
@@ -51,13 +51,16 @@ class DetailException:
 
 
 class BaseHTTPException(HTTPException):
-    def __init__(self, exception_info: ExceptionInfoBlock, massage: str) -> None:
-        
+    def __init__(
+        self, exception_info: ExceptionInfoBlock, massage: str
+    ) -> None:
+
         detail = self.detail(exception_info, massage)
         super().__init__(401, detail.to_dict(), None)
 
     def detail(self, exception_info: ExceptionInfoBlock, massage: str):
         return DetailException(exception_info.value, massage)
+
 
 # Работа с аутентификацией
 class AuthenticationHttpException(BaseHTTPException):
@@ -73,10 +76,11 @@ class NoRoleExistsHttpException(BaseHTTPException):
 
 
 # Работа с токенами
-class TokenNotFoundHttpException(BaseHTTPException): 
+class TokenNotFoundHttpException(BaseHTTPException):
     def __init__(self, massage: str) -> None:
         super().__init__(ExceptionInfoBlock.token_not_found, massage)
-        
+
+
 # Работа с доступом
 class DeniedAccessException(BaseHTTPException):
     def __init__(self, massage: str) -> None:

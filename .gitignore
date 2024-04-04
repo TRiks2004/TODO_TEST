@@ -11,3 +11,5 @@ values/
 security/*.py
 
 datebase/models.py
+
+.VSCodeCounter/

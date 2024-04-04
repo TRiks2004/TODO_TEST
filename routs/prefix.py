@@ -10,6 +10,7 @@ class Prefix(BaseSettings):
     identification: str = "identification"
     user: str = "user"
     role: str = "role"
+    file: str = "file"
 
 
 prefix = Prefix()

@@ -1,56 +1,76 @@
 import os
 import sys
 
-sys.path.insert(1, os.path.join(sys.path[0], ".."))
+import pathlib
 
-from repository import RepositoryUser, User
-from datebase.models import BaseModel
+sys.path.append(os.getcwd())
 
-import asyncio
-import json
+from repository import RepositoryBucketServices, RepositoryFileServices
+from datebase.schemes.bucket import CreateBucketS
+from datebase.schemes.file import CreateFileMinioS
+import random
 
-
-async def user_to_dict(base_model: BaseModel):
-    return await base_model.model_to_dict()
-
-
-async def users_to_dict(users: list[BaseModel]):
-    return [await user_to_dict(user) for user in users]
-
-
-async def to_json(model):
-    return json.dumps(model, indent=4)
-
-
-async def model_to_json(base_model: BaseModel):
-    return await to_json(await user_to_dict(base_model))
-
-
-async def models_to_json(base_models: list[BaseModel]):
-    return await to_json(await users_to_dict(base_models))
-
-
-async def my_print(handler: str, bady: str):
-    handler_new = f"| {handler.upper()} |"
-
-    answer = f"\n| {handler_new:-^120} |"
-
-    print(answer)
-
-    print(f"\n{bady}\n")
-
-    print("-" * len(answer))
-
-
-from repository.access_levels import AccessLevels, check_access_level
+from datebase import MinioClient
 
 
 async def main():
+    """bucket_name = "python-test-bucket"
+    object_name = "my-test-file52.py"
 
-    await check_access_level(
-        "XD5TrqCebIUI2X4xhS4otxAPUhTyg27QhIVXk9fZi6y8Htx0xFleB9hsuzwJ1ZN3HyTHDliu02WHPq1ZsoqHcNkYMLISZCEjEtp2",
-        AccessLevels.defult,
+    token = "if5nf24JMcKbwUSN2uBvp51AMthSag0kplINubigdKQ=".encode("utf-8")
+
+    with open(
+        pathlib.Path(__file__).parent / "create_headers_env.py", "rb"
+    ) as f:
+
+        result = await MinioClient.put_object_crypt(
+            bucket_name=bucket_name,
+            object_name=object_name,
+            data=f,
+            content_type="application/octet-stream",
+            token=token,
+        )
+
+        print(result)
+
+    with open(
+        pathlib.Path(__file__).parent / "create_headers_env_get.py", "+bw"
+    ) as f:
+
+        result = await MinioClient.get_object_crypt(
+            bucket_name=bucket_name, object_name=object_name, token=token
+        )
+
+        f.write(result)"""
+
+    bucket = await RepositoryBucketServices.service_create_bucket_exists(
+        bucket=CreateBucketS(
+            user_id="b9d2145e-b150-4e32-b05d-16dcbe6071bb",
+        )
     )
 
+    print('\n\n')
+    print(await bucket.model_to_dict())
+    print('\n\n')
+    
+    with open(
+        pathlib.Path(__file__).parent / "create_headers_env.py", "rb"
+    ) as f:
+        file_minio = CreateFileMinioS(
+            bucket=bucket.id_bucket,
+            name_file='test.py',
+            data=f.read(),
+            content_type="application/octet-stream",
+        )
 
-asyncio.run(main())
+        fail_save = await RepositoryFileServices.service_save_file(file_minio)
+
+        print('\n\n')
+        print(await fail_save.model_to_dict())
+        print('\n\n')
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())

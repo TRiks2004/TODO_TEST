@@ -42,7 +42,37 @@ services:
       - ${EXTERNAL_PORT_UI_REDIS}:${INTERNAL_PORT_UI_REDIS}
     networks:
       - todo_network
- 
+  
+  minio_todo:
+    container_name: ${MINIO_CONTAINER_NAME}
+    image: minio/minio
+    restart: always
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_PROMETHEUS_AUTH_TYPE=${MINIO_PROMETHEUS_AUTH_TYPE}
+      - MINIO_CACHE=${MINIO_CACHE}
+      - MINIO_CACHE_DRIVES=${MINIO_CACHE_DRIVES}
+      - MINIO_CACHE_QUOTA=${MINIO_CACHE_QUOTA}
+      - MINIO_CACHE_AFTER=${MINIO_CACHE_AFTER}
+      - MINIO_CACHE_WATERMARK_LOW=${MINIO_CACHE_WATERMARK_LOW}
+      - MINIO_CACHE_WATERMARK_HIGH=${MINIO_CACHE_WATERMARK_HIGH}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: server --console-address ":${INTERNAL_PORT_CONSOLE_MINIO}" /data${MINIO_DATA_SET_COUNT}
+    ports:
+      - "${EXTERNAL_PORT_MINIO}:${INTERNAL_PORT_MINIO}"
+      - "${EXTERNAL_PORT_CONSOLE_MINIO}:${INTERNAL_PORT_CONSOLE_MINIO}"
+    volumes: 
+      - ${MINIO_DATA_SET1}:/data1
+      - ${MINIO_DATA_SET2}:/data2
+      - ${MINIO_DATA_SET3}:/data3
+      - ${MINIO_DATA_SET4}:/data4
+    networks:
+      - todo_network
+    depends_on:
+      - postgres_todo
+
   fastapi_todo:
     build: .
     container_name: ${FASTAPI_CONTAINER_NAME}
@@ -65,8 +95,9 @@ services:
       - postgres_todo
       - pgadmin_todo
       - redisstack_todo
+      - minio_todo
 
-
+  
 networks:
   todo_network:  
     external: true

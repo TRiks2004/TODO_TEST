@@ -51,7 +51,7 @@ class RepositoryModel(Generic[MDT]):
         whereclause: ColumnElement[bool],
         *,
         session: AsyncSession = None,
-    ) -> MDT:
+    ) -> MDT | None:
         """Метод для получения модели из базы данных по условию."""
 
         # Формирование запроса

@@ -41,5 +41,5 @@ async def authentication(login: str, password: str):
 
 @identification_router.get("/autho")
 async def authorization(token: TokenSchema):
-    check = await check_access_level(token, AccessLevels.admin)
+    check = await check_access_level(token, AccessLevels.defult)
     return check

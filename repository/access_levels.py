@@ -1,7 +1,9 @@
 from .model.role import RepositoryRoleServices
 
 from exception import (
-    NoRoleExistsHttpException, TokenNotFoundHttpException, DeniedAccessException
+    NoRoleExistsHttpException,
+    TokenNotFoundHttpException,
+    DeniedAccessException,
 )
 
 
@@ -46,8 +48,6 @@ async def check_access_level(token: str | None, access_level: int | None):
         access = await AccessLevels.check(access_level, check_lavel)
 
         if not access:
-            raise DeniedAccessException(
-                "Доступ запрещен"
-            )
+            raise DeniedAccessException("Доступ запрещен")
     else:
         raise TokenNotFoundHttpException("Токен не найден")

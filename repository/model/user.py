@@ -1,6 +1,6 @@
 from ..RepositoryModel import RepositoryModel, async_session_decorator, select
 from ..RepositoryModelServices import RepositoryModelServices
-from datebase.models import User, Role
+from datebase.models import User, Role, Token
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -41,6 +41,24 @@ class RepositoryUser(RepositoryModel[User]):
         # Возвращение результата
         return result.scalars().one_or_none()
 
+    @classmethod
+    @async_session_decorator
+    async def get_user_by_token(
+        cls, token: str, *, session: AsyncSession = None
+    ) -> User | None:
+
+        stmt = (
+            select(cls._MDB)
+            .join(Token, Token.user_id == cls._MDB.id_user)
+            .where(Token.auth_token == token)
+            .order_by(Token.create_at)
+            .limit(1)
+        )
+
+        result = await session.execute(stmt)
+
+        return result.scalars().one_or_none()
+
 
 class RepositoryUserServices(RepositoryModelServices[RepositoryUser]):
     _RMD = RepositoryUser
@@ -69,3 +87,7 @@ class RepositoryUserServices(RepositoryModelServices[RepositoryUser]):
     @classmethod
     async def service_select_lavel_by_id(cls, id_user: UUID):
         return await cls._RMD.get_lavel_by_id(id_user)
+
+    @classmethod
+    async def service_select_user_by_token(cls, token: str):
+        return await cls._RMD.get_user_by_token(token)
