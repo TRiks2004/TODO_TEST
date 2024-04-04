@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
-from typing import Annotated, List
+from typing import List
 
 from .prefix import prefix
 

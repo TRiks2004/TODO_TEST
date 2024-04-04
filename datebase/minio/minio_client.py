@@ -10,6 +10,8 @@ from typing import BinaryIO, List
 
 from common import settings_minio
 
+import aiohttp
+import asyncio
 
 class MinioClient:
     __client_instance: Minio = None
@@ -23,21 +25,22 @@ class MinioClient:
         return cls.__client_instance
 
     @classmethod
-    async def create_instance(cls) -> Minio:
-        print(
-            f"{settings_minio.host}:{settings_minio.port}",
-            settings_minio.access_key,
-            settings_minio.secret_key,
-            False,
-            sep="\n",
-        )
+    async def create_session(cls):
+        return aiohttp.ClientSession()
 
-        return Minio(
+
+    @classmethod
+    async def create_instance(cls) -> Minio:
+        minio_client = Minio(
             endpoint=f"{settings_minio.host}:{settings_minio.port}",
             access_key=settings_minio.access_key,
             secret_key=settings_minio.secret_key,
             secure=False,
         )
+        
+        return minio_client
+        
+        
 
     @classmethod
     async def list_buckets(cls) -> List[Bucket]:

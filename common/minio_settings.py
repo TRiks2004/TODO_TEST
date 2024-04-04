@@ -10,4 +10,4 @@ class SettingsMinio(BaseSettings):
 
 
 settings_minio = SettingsMinio()
-print(settings_minio)
+print("-"*20, 'Minio Settings :', settings_minio)

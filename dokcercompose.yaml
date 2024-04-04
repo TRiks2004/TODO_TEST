@@ -43,7 +43,7 @@ services:
     networks:
       - todo_network
   
-  minio_todo:
+  miniotodo:
     container_name: ${MINIO_CONTAINER_NAME}
     image: minio/minio
     restart: always
@@ -95,7 +95,7 @@ services:
       - postgres_todo
       - pgadmin_todo
       - redisstack_todo
-      - minio_todo
+      - miniotodo
 
   
 networks:

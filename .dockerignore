@@ -1,0 +1,11 @@
+__pycache__/
+.vscode/
+.idea/
+
+values/
+
+.VSCodeCounter/
+
+datebase/migrations/
+
+formatter_config/

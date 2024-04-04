@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings
 
-from fastapi import APIRouter, Depends
+from fastapi import Depends
 from fastapi.security import APIKeyHeader
 
 from typing import TypeAlias, Annotated

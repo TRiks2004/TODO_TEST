@@ -6,4 +6,4 @@ from .model.token import RepositoryToken, RepositoryTokenServices, Token
 
 from .model.authentication import RepositoryAuthenticationServices
 from .model.bucket import RepositoryBucketServices, RepositoryBucket, Bucket
-from .model.file import RepositoryFileServices, RepositoryFile, File
+from .model.file import RepositoryFileServices, RepositoryFile, File, RepositoryFileBucketServices

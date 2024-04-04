@@ -1,7 +1,7 @@
 from repository import RepositoryAuthenticationServices
 
 from datebase.schemes.token import SGetToken
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter
 
 from repository.access_levels import AccessLevels, check_access_level
 

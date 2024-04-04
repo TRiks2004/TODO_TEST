@@ -11,7 +11,7 @@ from datebase import init_fast_api_cache
 
 from datebase.connect import test_db
 
-from tools.test import MinioClient
+from datebase import MinioClient
 
 
 async def lifespan(app: FastAPI):
