@@ -25,7 +25,6 @@ class GetFileS(CreateFileS):
     add_at: datetime
 
 
-
 class CreateFileMinioS(CreateFileS):
     data: bytes
     content_type: str

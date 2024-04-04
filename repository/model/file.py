@@ -17,8 +17,7 @@ from typing import List
 from datebase import MinioClient
 
 from .bucket import RepositoryBucketServices
-
-
+from tools.path_file import get_path_file
 
 
 class RepositoryFile(RepositoryModel[File]):
@@ -44,27 +43,32 @@ class RepositoryFileServices(RepositoryModelServices[RepositoryFile]):
 
     @classmethod
     async def _service_create_file_minio(cls, file: CreateFileMinioS):
-        backet = await RepositoryBucketServices.service_select_by_id(file.bucket)
-        
-        await MinioClient.put_object(
-            backet.name_bucket, file.name_file, BytesIO(file.data), file.content_type
+        backet = await RepositoryBucketServices.service_select_by_id(
+            file.bucket
         )
-        
+
+        await MinioClient.put_object(
+            backet.name_bucket,
+            file.name_file,
+            BytesIO(file.data),
+            file.content_type,
+        )
+
     @classmethod
     async def service_save_file(cls, file: CreateFileMinioS):
         file_save = await cls._service_create_file_postgres(
-            CreateFileS(
-                bucket=file.bucket, name_file=file.name_file
-            )
+            CreateFileS(bucket=file.bucket, name_file=file.name_file)
         )
-        
+
         await cls._service_create_file_minio(
             CreateFileMinioS(
-                bucket=file.bucket, name_file=str(file_save.id_file) + '.' + file.name_file.split(".", 1)[1],
-                data=file.data, content_type=file.content_type
+                bucket=file.bucket,
+                name_file=get_path_file(
+                    str(file_save.id_file), file.name_file
+                ),
+                data=file.data,
+                content_type=file.content_type,
             )
         )
-        
+
         return file_save
-        
-        

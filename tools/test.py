@@ -49,25 +49,25 @@ async def main():
         )
     )
 
-    print('\n\n')
+    print("\n\n")
     print(await bucket.model_to_dict())
-    print('\n\n')
-    
+    print("\n\n")
+
     with open(
         pathlib.Path(__file__).parent / "create_headers_env.py", "rb"
     ) as f:
         file_minio = CreateFileMinioS(
             bucket=bucket.id_bucket,
-            name_file='test.py',
+            name_file="test.py",
             data=f.read(),
             content_type="application/octet-stream",
         )
 
         fail_save = await RepositoryFileServices.service_save_file(file_minio)
 
-        print('\n\n')
+        print("\n\n")
         print(await fail_save.model_to_dict())
-        print('\n\n')
+        print("\n\n")
 
 
 if __name__ == "__main__":

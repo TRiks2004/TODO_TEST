@@ -11,9 +11,13 @@ from datebase import init_fast_api_cache
 
 from datebase.connect import test_db
 
+from tools.test import MinioClient
+
 
 async def lifespan(app: FastAPI):
     ml_models = {}
+
+    await MinioClient.get_instance()
 
     await init_fast_api_cache()
     await test_db()

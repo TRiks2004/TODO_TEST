@@ -33,7 +33,7 @@ class RepositoryBucket(RepositoryModel[Bucket]):
 
 
 class RepositoryBucketServices(RepositoryModelServices[RepositoryBucket]):
-    
+
     _RMD = RepositoryBucket
 
     def __init__(self) -> None:
@@ -77,6 +77,7 @@ class RepositoryBucketServices(RepositoryModelServices[RepositoryBucket]):
     @classmethod
     async def service_select_by_id(cls, id_bucket: UUID) -> Bucket:
         return await cls._RMD.get_by_id(id_bucket)
+
 
 # if not await MinioClient.bucket_exists(
 #         bucket.name_bucket

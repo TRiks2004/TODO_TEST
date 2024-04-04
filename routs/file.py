@@ -3,20 +3,26 @@ from fastapi import Depends, APIRouter, UploadFile, File
 
 from typing import Annotated, List
 
-from repository import RepositoryRoleServices, Role, RepositoryUserServices
+from repository import (
+    RepositoryUserServices,
+    RepositoryFileServices,
+    RepositoryBucketServices,
+)
 from repository.access_levels import AccessLevels, check_access_level
 
 from .prefix import TokenSchema, prefix
 
 from tools.test import MinioClient
 
+from datebase.schemes.bucket import CreateBucketS
+from datebase.schemes.file import CreateFileMinioS
+
+from tools.path_file import get_path_file
 
 file_router = APIRouter(
     prefix=f"/{prefix.file}",
     tags=["FileWork"],
 )
-
-from datebase.schemes.bucket import CreateBucketS
 
 
 @file_router.post("/upload_file")
@@ -29,27 +35,24 @@ async def upload_file(
     await check_access_level(token, AccessLevels.defult)
     user = await RepositoryUserServices.service_select_user_by_token(token)
 
-    bucket = CreateBucketS(
-        user_id=user.id_user, name_bucket=str(user.id_user) + "-bucket"
+    bucket_create = CreateBucketS(user_id=user.id_user)
+
+    bucket = await RepositoryBucketServices.service_create_bucket_exists(
+        bucket=bucket_create
     )
 
-    data = upload_file.file.read()
+    if name is None:
+        name = upload_file.filename
+    else:
+        name = await get_path_file(name, upload_file.filename)
 
-    file_name = (
-        upload_file.filename
-        if (name is None)
-        else name + "." + upload_file.filename.split(".", 1)[1]
+    file_minio = CreateFileMinioS(
+        bucket=bucket.id_bucket,
+        name_file=name,
+        data=await upload_file.read(),
+        content_type=upload_file.content_type,
     )
 
-    if not await MinioClient.bucket_exists(bucket.name_bucket):
-        await MinioClient.make_bucket(bucket.name_bucket)
-
-    # await MinioClient.put_object_crypt(
-    #     bucket_name=bucket.name_bucket,
-    #     object_name=file_name,
-    #     data=BytesIO(data),
-    #     content_type=upload_file.content_type,
-    #     token="if5nf24JMcKbwUSN2uBvp51AMthSag0kplINubigdKQ=".encode("utf-8")
-    # )
+    fail_save = await RepositoryFileServices.service_save_file(file_minio)
 
     return {"upload_file": upload_file, "token": token}
