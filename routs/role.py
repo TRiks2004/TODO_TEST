@@ -5,8 +5,11 @@ from typing import Annotated, List
 from datebase.schemes.role import GetRoleS, CreateRoleS
 
 from repository import RepositoryRoleServices as RoleServices, Role
+from tools.test import FastApiTest
 
-from .prefix import prefix
+from .prefix import prefix, TokenSchema
+
+
 
 role_router = APIRouter(
     prefix=f"/{prefix.role}",

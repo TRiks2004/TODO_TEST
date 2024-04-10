@@ -27,6 +27,8 @@ async def upload_file(
     upload_file: UploadFile = File(...),
     token: TokenSchema = None,
 ):
+    print()
+    
     return await RepositoryFileBucketServices.service_download_file(
         name, upload_file, token
     )

@@ -18,3 +18,16 @@ prefix = Prefix()
 apikey_scheme = APIKeyHeader(name="Authorization", auto_error=False)
 
 TokenSchema: TypeAlias = Annotated[str, Depends(apikey_scheme)]
+
+
+
+
+
+
+
+
+
+
+
+
+
